@@ -1,0 +1,33 @@
+/**
+ * CAO Product Variants
+ *
+ * @author  Jay Trees <modified-cao-product-variants@grandels.email>
+ * @link    https://github.com/grandeljay/modified-cao-product-variants
+ * @package GrandeljayCaoProductVariants
+ */
+
+/** Shipping status image */
+.lb_shipping_image > img,
+img.pd_shipping_image {
+    width: auto;
+    height: 1em;
+}
+
+/** Variants Dropdown */
+.SumoSelect.sumo_grandeljay_cao_product_variants_product {
+    display: block;
+    width: 100%;
+    margin-top: 0.2em;
+}
+.SumoSelect.sumo_grandeljay_cao_product_variants_product > .CaptionCont {
+    color: #72b534;
+    border-radius: 4px;
+    border-color: currentColor;
+    background-color: #ebf4e2;
+}
+.SumoSelect.sumo_grandeljay_cao_product_variants_product > .optWrapper > .options li.opt.selected {
+    background-color: #ebf4e2;
+}
+.SumoSelect.sumo_grandeljay_cao_product_variants_product > .CaptionCont > span {
+    font-weight: 500;
+}
