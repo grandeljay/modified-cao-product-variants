@@ -12,7 +12,7 @@
  */
 
 use RobinTheHood\ModifiedStdModule\Classes\StdModule;
-use Grandeljay\CaoProductVariants\{Constants, Installer, Variant};
+use Grandeljay\CaoProductVariants\{Actions, Constants, Installer, Variant};
 
 class grandeljay_cao_product_variants_product extends StdModule
 {
@@ -23,6 +23,11 @@ class grandeljay_cao_product_variants_product extends StdModule
         parent::__construct(Constants::MODULE_PRODUCT_NAME);
 
         $this->checkForUpdate(true);
+
+        $this->addAction(
+            'actionMigrate',
+            $this->getConfig('BUTTON_MIGRATE')
+        );
     }
 
     public function install(): void
@@ -81,5 +86,10 @@ class grandeljay_cao_product_variants_product extends StdModule
         $product_data_smarty['PRODUCTS_PRICE_ARRAY'][0]['GRANDELJAY_CAO_PRODUCT_VARIANTS']['PRICE_HIGHEST'] = $xtcPrice->xtcFormatCurrency($variant_price_highest);
 
         return $product_data_smarty;
+    }
+
+    protected function invokeActionMigrate(): void
+    {
+        call_user_func(Actions::class . '::actionMigrate');
     }
 }

@@ -7,7 +7,6 @@ use grandeljay_cao_product_variants_product as CaoProductVariants;
 class Installer
 {
     private static CaoProductVariants $moduleCaoProductVariants;
-    private static int $shipping_status_id;
 
     public static function install(CaoProductVariants $moduleCaoProductVariants): void
     {
@@ -47,79 +46,7 @@ class Installer
         /**
          * Migrate old variant columns
          */
-        $variants_query = xtc_db_query(
-            sprintf(
-                'SELECT *
-                   FROM `%s`
-                  WHERE `products_var_parent_artnum` <> ""
-                     OR `products_var_id`            <> ""
-                     OR `products_varname`           <> ""
-                     OR `products_vartext`           <> ""
-                     OR `products_var_langtext`      <> ""',
-                TABLE_PRODUCTS
-            )
-        );
-
-        while ($product = xtc_db_fetch_array($variants_query)) {
-            // {
-            //     "names": {
-            //         "2": "H\u00f6he (mm) - Volumen (L) - ECE 67R-01",
-            //         "11": "Altezza (mm) - Volume (L) - ECE 67R-01",
-            //         "13": "Altura (mm) - Volumen (L) - ECE 67R-01",
-            //         "10": "Hauteur (mm) - Volume (L) - ECE 67R-01",
-            //         "1": "Height (mm) - Volume (L) - ECE 67R-01"
-            //     },
-            //     "texts": {
-            //         "2": "W\u00e4hlen Sie Ihre Variante",
-            //         "11": "Scegli la tua variante",
-            //         "13": "Elija su variante",
-            //         "10": "\rChoisissez votre variante",
-            //         "1": "Select your variant"
-            //     },
-            //     "parent": "",
-            //     "ids": [
-            //         "4515",
-            //         "4999",
-            //         "5000",
-            //         "5001",
-            //         "5002",
-            //         "5003"
-            //     ],
-            //     "values": [
-            //         "220mm - 47L",
-            //         "230mm - 51L",
-            //         "240mm - 53L - E20",
-            //         "250mm - 54L",
-            //         "270mm - 59L - E20"
-            //     ]
-            // }
-
-            $products_variants = addslashes(
-                json_encode(
-                    array(
-                        'names'  => empty($product['products_varname'])           ? array() : unserialize($product['products_varname']),
-                        'texts'  => empty($product['products_vartext'])           ? array() : unserialize($product['products_vartext']),
-                        'parent' => empty($product['products_var_parent_artnum']) ? ''      : $product['products_var_parent_artnum'],
-                        'ids'    => empty($product['products_var_id'])            ? array() : explode(',', $product['products_var_id']),
-                        'values' => empty($product['products_var_langtext'])      ? array() : explode(',', unserialize($product['products_var_langtext'])[2]),
-                    )
-                )
-            );
-
-            xtc_db_query(
-                sprintf(
-                    'UPDATE `%1$s`
-                        SET `%2$s`                  = "%3$s",
-                            `products_shippingtime` = %4$s
-                      WHERE `products_id` = %5$s',
-                    TABLE_PRODUCTS,
-                    Constants::COLUMN_PRODUCTS_VARIANTS,
-                    $products_variants,
-                    self::$shipping_status_id,
-                    $product['products_id']
-                )
-            );
-        }
+        Actions::actionMigrate();
     }
 
     private static function installTableShippingStatus(): void
@@ -163,7 +90,6 @@ class Installer
             xtc_db_perform(TABLE_SHIPPING_STATUS, $sql_data_array);
         }
 
-        self::$shipping_status_id = $shipping_status_id;
         self::$moduleCaoProductVariants->addConfiguration(Constants::CONFIGURATION_SHIPPING_STATUS_ID, $shipping_status_id, 6, 1);
     }
 
