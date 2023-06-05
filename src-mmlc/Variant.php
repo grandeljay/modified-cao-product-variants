@@ -81,8 +81,8 @@ class Variant
             $this->product_data_variant = $this->getVariantsFromParent($this->product_data_variant['parent']);
         }
 
-        $this->name         = $this->product_data_variant['names'][$language_id_current] ?? $this->product_data_variant['names'][$language_id_fallback] ?? 'Options';
-        $this->dropdownName = $this->product_data_variant['texts'][$language_id_current] ?? $this->product_data_variant['texts'][$language_id_fallback] ?? 'Select your variant';
+        $this->name         = $this->getDropdownName($language_id_current, $language_id_fallback);
+        $this->dropdownName = $this->getDropdownPlaceholder($language_id_current, $language_id_fallback);
         $this->values       = $this->product_data_variant['values'] ?? array();
         $this->ids          = $this->product_data_variant['ids']    ?? array();
     }
@@ -95,6 +95,10 @@ class Variant
     public function isValid(): bool
     {
         if (!isset($this->product_data[Constants::COLUMN_PRODUCTS_VARIANTS])) {
+            return false;
+        }
+
+        if (empty($this->ids)) {
             return false;
         }
 
@@ -179,9 +183,12 @@ class Variant
                 let dropdown_variants = document.querySelector('[name="<?= $variant_dropdown_attribute_name ?>"]');
 
                 if (window.jQuery && dropdown_variants.sumo) {
-                    let products_id = '<?= $this->product_data['products_id'] ?>';
+                    let products_id     = '<?= $this->product_data['products_id'] ?>';
+                    let products_option = dropdown_variants.querySelector('option[value="' + products_id + '"]');
 
-                    dropdown_variants.sumo.selectItem(products_id);
+                    if (products_option) {
+                        dropdown_variants.sumo.selectItem(products_id);
+                    }
                 }
                 else {
                     setTimeout(jQueryCheck, 10);
@@ -191,18 +198,27 @@ class Variant
             setTimeout(jQueryCheck, 10);
         });
         </script>
-        <select name="<?= $variant_dropdown_attribute_name ?>">
-            <option <?= $this->isParent ? 'selected="selected"' : '' ?> disabled="disabled" value=""><?= '-- ' . $this->dropdownName . ' --' ?></option>
-
-            <?php foreach ($this->getDropdownValues() as $dropdown_value) { ?>
-                <?php if ($dropdown_value['id'] === $this->product_data['products_id']) { ?>
-                    <option selected="selected" value="<?= $dropdown_value['id'] ?>"><?= $dropdown_value['text'] ?></option>
-                <?php } else { ?>
-                    <option value="<?= $dropdown_value['id'] ?>"><?= $dropdown_value['text'] ?></option>
-                <?php } ?>
-            <?php } ?>
-        </select>
         <?php
+        $dropdown_values = $this->getDropdownValues();
+
+        if (empty($dropdown_values)) {
+            echo constant(Constants::MODULE_PRODUCT_NAME . '_DROPDOWN_UNAVAILABLE');
+        } else {
+            ?>
+            <select name="<?= $variant_dropdown_attribute_name ?>">
+                <option <?= $this->isParent ? 'selected="selected"' : '' ?> disabled="disabled" value=""><?= '-- ' . $this->dropdownName . ' --' ?></option>
+
+                <?php foreach ($dropdown_values as $dropdown_value) { ?>
+                    <?php if ($dropdown_value['id'] === $this->product_data['products_id']) { ?>
+                        <option selected="selected" value="<?= $dropdown_value['id'] ?>"><?= $dropdown_value['text'] ?></option>
+                    <?php } else { ?>
+                        <option value="<?= $dropdown_value['id'] ?>"><?= $dropdown_value['text'] ?></option>
+                    <?php } ?>
+                <?php } ?>
+            </select>
+            <?php
+        }
+
         $variant_dropdown = ob_get_clean();
 
         return $variant_dropdown;
@@ -290,5 +306,55 @@ class Variant
         $variant_data = json_decode($parent[Constants::COLUMN_PRODUCTS_VARIANTS], true);
 
         return $variant_data;
+    }
+
+    /**
+     * Returns variant dropdown label.
+     *
+     * @param int $language_id          The language to retrieve the text for.
+     * @param int $language_id_fallback The fallback language to retrieve the
+     *                                  text for.
+     *
+     * @return string
+     */
+    private function getDropdownName(int $language_id, $language_id_fallback): string
+    {
+        $constant = Constants::MODULE_PRODUCT_NAME . '_DROPDOWN_NAME';
+        $name     = defined($constant) ? constant($constant) : 'Options';
+
+        if (!empty($this->product_data_variant['names'][$language_id])) {
+            $name = $this->product_data_variant['names'][$language_id];
+        } else {
+            if (!empty($this->product_data_variant['names'][$language_id_fallback])) {
+                $name = $this->product_data_variant['names'][$language_id_fallback];
+            }
+        }
+
+        return $name;
+    }
+
+    /**
+     * Returns variant dropdown placeholder value.
+     *
+     * @param int $language_id          The language to retrieve the value for.
+     * @param int $language_id_fallback The fallback language to retrieve the
+     *                                  value for.
+     *
+     * @return string
+     */
+    private function getDropdownPlaceholder(int $language_id, $language_id_fallback): string
+    {
+        $constant     = Constants::MODULE_PRODUCT_NAME . '_DROPDOWN_PLACEHOLDER';
+        $dropdownName = defined($constant) ? constant($constant) : 'Select your variant';
+
+        if (!empty($this->product_data_variant['texts'][$language_id])) {
+            $dropdownName = $this->product_data_variant['texts'][$language_id];
+        } else {
+            if (!empty($this->product_data_variant['texts'][$language_id_fallback])) {
+                $dropdownName = $this->product_data_variant['texts'][$language_id_fallback];
+            }
+        }
+
+        return $dropdownName;
     }
 }

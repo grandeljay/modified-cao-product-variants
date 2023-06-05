@@ -12,12 +12,17 @@ use Grandeljay\CaoProductVariants\Constants;
 
 $translations = array(
     /** Module */
-    'TITLE'            => 'grandeljay - CAO Artikelvarianten',
-    'TEXT_TILE'        => 'CAO Artikelvarianten',
-    'LONG_DESCRIPTION' => 'Ermöglicht das verwenden von CAO Artikelvarianten im Shop.',
-    'STATUS_TITLE'     => 'Status',
-    'STATUS_DESC'      => 'Wählen Sie Ja um das Modul zu aktivieren und Nein um es zu deaktivieren.',
-    'BUTTON_MIGRATE'   => 'Varianten übernehmen',
+    'TITLE'                => 'grandeljay - CAO Artikelvarianten',
+    'TEXT_TILE'            => 'CAO Artikelvarianten',
+    'LONG_DESCRIPTION'     => 'Ermöglicht das verwenden von CAO Artikelvarianten im Shop.',
+    'STATUS_TITLE'         => 'Status',
+    'STATUS_DESC'          => 'Wählen Sie Ja um das Modul zu aktivieren und Nein um es zu deaktivieren.',
+    'BUTTON_MIGRATE'       => 'Varianten übernehmen',
+
+    /** Dropdown */
+    'DROPDOWN_NAME'        => 'Optionen',
+    'DROPDOWN_PLACEHOLDER' => 'Wählen Sie Ihre Variante',
+    'DROPDOWN_UNAVAILABLE' => 'Zurzeit sind leider keine Varianten verfügbar.',
 );
 
 foreach ($translations as $key => $text) {
