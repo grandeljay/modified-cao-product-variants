@@ -1,5 +1,7 @@
 # CAO Product Variants
 
+Allows using the [CAO Artikelvarianten](https://www.cao-faktura.de/doku/cao-faktura/ErweiterungVarianten.html) module with your shop.
+
 ## Preperation
 
 Before installing the module in modified, some preperational steps are required to ensure everything works properly.
