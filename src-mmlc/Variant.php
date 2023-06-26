@@ -41,7 +41,7 @@ class Variant
      *
      * @var array
      */
-    public array $product_data;
+    private array $product_data;
 
     /**
      * The decoded variant data from the database.
