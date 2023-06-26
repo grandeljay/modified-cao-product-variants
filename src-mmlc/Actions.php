@@ -6,6 +6,13 @@ class Actions
 {
     public static function actionMigrate(): void
     {
+        /**
+         * Method is otherwise called six times.
+         */
+        if (isset($_SESSION['grandeljay']['cao-product-variants']['actionMigrateOnce'])) {
+            return;
+        }
+
         $variants_query = xtc_db_query(
             sprintf(
                 'SELECT *
@@ -69,5 +76,7 @@ class Actions
                 )
             );
         }
+
+        $_SESSION['grandeljay']['cao-product-variants']['actionMigrateOnce'] = true;
     }
 }
