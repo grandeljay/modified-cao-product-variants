@@ -85,14 +85,14 @@ class Cao
         /**
          * Variant IDs
          *
-         * @var string The product variant ids, separated by a "@".
+         * @var string The product variant ids.
          */
         if (isset($_POST['products_var_id'])) {
             $variant_shop_ids = array_map(
                 function ($shop_id) {
                     return trim($shop_id);
                 },
-                explode('@', $_POST['products_var_id'])
+                Variant::getItems($_POST['products_var_id'])
             );
 
             $products_variant['ids'] = $variant_shop_ids;
@@ -101,14 +101,14 @@ class Cao
         /**
          * Variant values
          *
-         * @var string The product variant values, separated by a "@".
+         * @var string The product variant values.
          */
         if (isset($_POST['products_var_text'])) {
             $variant_values = array_map(
                 function ($shop_id) {
                     return trim($shop_id);
                 },
-                explode('@', $_POST['products_var_text'])
+                Variant::getItems($_POST['products_var_text'])
             );
 
             $products_variant['values'] = $variant_values;

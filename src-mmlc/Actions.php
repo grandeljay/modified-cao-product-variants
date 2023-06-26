@@ -19,18 +19,15 @@ class Actions
             )
         );
 
-        while ($product = xtc_db_fetch_array($variants_query)) {
-            $products_variants = addslashes(
-                json_encode(
-                    array(
-                        'names'  => empty($product['products_varname'])           ? array() : unserialize($product['products_varname']),
-                        'texts'  => empty($product['products_vartext'])           ? array() : unserialize($product['products_vartext']),
-                        'parent' => empty($product['products_var_parent_artnum']) ? ''      : $product['products_var_parent_artnum'],
-                        'ids'    => empty($product['products_var_id'])            ? array() : explode(',', $product['products_var_id']),
-                        'values' => empty($product['products_var_langtext'])      ? array() : explode(',', unserialize($product['products_var_langtext'])[2]),
-                    )
-                )
+        while ($product_data = xtc_db_fetch_array($variants_query)) {
+            $products_variants_data =  array(
+                'names'  => empty($product_data['products_varname'])           ? array() : unserialize($product_data['products_varname']),
+                'texts'  => empty($product_data['products_vartext'])           ? array() : unserialize($product_data['products_vartext']),
+                'parent' => empty($product_data['products_var_parent_artnum']) ? ''      : $product_data['products_var_parent_artnum'],
+                'ids'    => empty($product_data['products_var_id'])            ? array() : Variant::getItems($product_data['products_var_id']),
+                'values' => empty($product_data['products_var_langtext'])      ? array() : Variant::getItems(unserialize($product_data['products_var_langtext'])[2]),
             );
+            $products_variants      = addslashes(json_encode($products_variants_data));
 
             $shipping_status_id          = 0;
             $shipping_status_id_constant = Constants::MODULE_PRODUCT_NAME . '_' . Constants::CONFIGURATION_SHIPPING_STATUS_ID;
@@ -51,6 +48,13 @@ class Actions
                 $shipping_status_id = xtc_db_fetch_array($shipping_status_id_query)['configuration_value'];
             }
 
+            $product_is_variant                 = '' !== $products_variants_data['parent'] || array() !== $products_variants_data['ids'];
+            $product_shippingtime_is_of_variant = (int) $shipping_status_id === (int) $product_data['products_shippingtime'];
+
+            if (!$product_is_variant && $product_shippingtime_is_of_variant) {
+                $shipping_status_id = DEFAULT_SHIPPING_STATUS_ID;
+            }
+
             xtc_db_query(
                 sprintf(
                     'UPDATE `%1$s`
@@ -61,7 +65,7 @@ class Actions
                     Constants::COLUMN_PRODUCTS_VARIANTS,
                     $products_variants,
                     $shipping_status_id,
-                    $product['products_id']
+                    $product_data['products_id']
                 )
             );
         }

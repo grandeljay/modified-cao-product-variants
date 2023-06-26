@@ -13,11 +13,35 @@ namespace Grandeljay\CaoProductVariants;
 class Variant
 {
     /**
+     * Returns the product's variant id's or text independent of their delimiter
+     * (`,` or `@`).
+     *
+     * @param string $items
+     *
+     * @return array
+     */
+    public static function getItems(string $items): array
+    {
+        $itemsComma = explode(',', $items);
+        $itemsAt    = explode('@', $items);
+
+        if (is_array($itemsComma) && count($itemsComma) >= count($itemsAt)) {
+            return $itemsComma;
+        }
+
+        if (is_array($itemsAt) && count($itemsAt) >= count($itemsComma)) {
+            return $itemsAt;
+        }
+
+        return $items;
+    }
+
+    /**
      * The modified-shop product data.
      *
      * @var array
      */
-    private array $product_data;
+    public array $product_data;
 
     /**
      * The decoded variant data from the database.
@@ -235,7 +259,7 @@ class Variant
 
         foreach ($this->ids as $id) {
             $product        = new \product($id);
-            $products_price = $product->data['products_price'];
+            $products_price = $product->data['products_price'] ?? 0;
 
             if (0 === $products_price || null === $products_price) {
                 continue;

@@ -14,11 +14,15 @@ if (rth_is_module_disabled(Constants::MODULE_PRODUCT_NAME)) {
     return;
 }
 
-if (!isset($product->data[Constants::COLUMN_PRODUCTS_VARIANTS], $_SESSION['languages_id'])) {
+if (!$_SESSION['languages_id']) {
     return;
 }
 
 $variant = new Variant($product->data);
+
+if (!$variant->isValid()) {
+    return;
+}
 
 $info_smarty->assign('GRANDELJAY_CAO_PRODUCT_VARIANTS_NAME', $variant->getName());
 $info_smarty->assign('GRANDELJAY_CAO_PRODUCT_VARIANTS_DROPDOWN', $variant->getDropdown());
