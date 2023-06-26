@@ -49,14 +49,19 @@ class Actions
             }
 
             $product_is_variant                 = '' !== $products_variants_data['parent'] || array() !== $products_variants_data['ids'];
+            $product_variant_is_child           = '' !== $products_variants_data['parent'] && array() === $products_variants_data['ids'];
             $product_shippingtime_is_of_variant = (int) $shipping_status_id === (int) $product_data['products_shippingtime'];
 
-            if (!$product_is_variant) {
-                if ($product_shippingtime_is_of_variant) {
-                    $shipping_status_id = DEFAULT_SHIPPING_STATUS_ID;
-                } else {
-                    continue;
+            if ($product_is_variant) {
+                if ($product_variant_is_child) {
+                    if ($product_shippingtime_is_of_variant) {
+                        $shipping_status_id = DEFAULT_SHIPPING_STATUS_ID;
+                    } else {
+                        continue;
+                    }
                 }
+            } else {
+                continue;
             }
 
             xtc_db_query(

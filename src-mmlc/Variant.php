@@ -381,4 +381,14 @@ class Variant
 
         return $dropdownName;
     }
+
+    /**
+     * Returns whether this Variant is a parent.
+     *
+     * @return bool
+     */
+    public function isParent(): bool
+    {
+        return $this->isParent;
+    }
 }

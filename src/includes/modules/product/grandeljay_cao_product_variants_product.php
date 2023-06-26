@@ -77,6 +77,10 @@ class grandeljay_cao_product_variants_product extends StdModule
             return $product_data_smarty;
         }
 
+        if (!$variant->isParent()) {
+            return $product_data_smarty;
+        }
+
         $variant_price_lowest  = $variant->getLowestPrice();
         $variant_price_highest = $variant->getHighestPrice();
 
