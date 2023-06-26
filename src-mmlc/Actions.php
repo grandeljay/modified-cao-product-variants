@@ -6,13 +6,6 @@ class Actions
 {
     public static function actionMigrate(): void
     {
-        /**
-         * Method is otherwise called six times.
-         */
-        if (isset($_SESSION['grandeljay']['cao-product-variants']['actionMigrateOnce'])) {
-            return;
-        }
-
         $variants_query = xtc_db_query(
             sprintf(
                 'SELECT *
@@ -58,8 +51,12 @@ class Actions
             $product_is_variant                 = '' !== $products_variants_data['parent'] || array() !== $products_variants_data['ids'];
             $product_shippingtime_is_of_variant = (int) $shipping_status_id === (int) $product_data['products_shippingtime'];
 
-            if (!$product_is_variant && $product_shippingtime_is_of_variant) {
-                $shipping_status_id = DEFAULT_SHIPPING_STATUS_ID;
+            if (!$product_is_variant) {
+                if ($product_shippingtime_is_of_variant) {
+                    $shipping_status_id = DEFAULT_SHIPPING_STATUS_ID;
+                } else {
+                    continue;
+                }
             }
 
             xtc_db_query(
@@ -76,7 +73,5 @@ class Actions
                 )
             );
         }
-
-        $_SESSION['grandeljay']['cao-product-variants']['actionMigrateOnce'] = true;
     }
 }
