@@ -141,7 +141,7 @@ class Variant
         foreach ($this->ids as $index => $id) {
             $variant_product = new \product($id);
 
-            if ('1' !== $variant_product->data['products_status']) {
+            if (!isset($variant_product->data['products_status']) || '1' !== $variant_product->data['products_status']) {
                 continue;
             }
 
@@ -257,9 +257,26 @@ class Variant
     {
         $lowest_price = 0;
 
-        foreach ($this->ids as $id) {
-            $product        = new \product($id);
-            $products_price = $product->data['products_price'] ?? 0;
+        $xtcPrice = new \xtcPrice($_SESSION['currency'], $_SESSION['customers_status']['customers_status_id']);
+
+        if (!isset($_SESSION['currency'], $_SESSION['customers_status']['customers_status_id'])) {
+            return $lowest_price;
+        }
+
+        foreach ($this->ids as $products_id) {
+            $product        = new \product($products_id);
+            $products_price = $xtcPrice->xtcGetPrice(
+                $products_id,
+                $format     = false,
+                $quantity   = 1,
+                $product->data['products_tax_class_id'] ?? '',
+                $product->data['products_price'] ?? 0,
+                $vpe_status = 1
+            );
+
+            if (!isset($product->data['products_status']) || '1' !== $product->data['products_status']) {
+                continue;
+            }
 
             if (0 === $products_price || null === $products_price) {
                 continue;
@@ -286,9 +303,26 @@ class Variant
     {
         $highest_price = 0;
 
-        foreach ($this->ids as $id) {
-            $product        = new \product($id);
-            $products_price = $product->data['products_price'];
+        $xtcPrice = new \xtcPrice($_SESSION['currency'], $_SESSION['customers_status']['customers_status_id']);
+
+        if (!isset($_SESSION['currency'], $_SESSION['customers_status']['customers_status_id'])) {
+            return $highest_price;
+        }
+
+        foreach ($this->ids as $products_id) {
+            $product        = new \product($products_id);
+            $products_price = $xtcPrice->xtcGetPrice(
+                $products_id,
+                $format     = false,
+                $quantity   = 1,
+                $product->data['products_tax_class_id'] ?? '',
+                $product->data['products_price'] ?? 0,
+                $vpe_status = 1
+            );
+
+            if (!isset($product->data['products_status']) || '1' !== $product->data['products_status']) {
+                continue;
+            }
 
             if (0 === $products_price || null === $products_price) {
                 continue;
