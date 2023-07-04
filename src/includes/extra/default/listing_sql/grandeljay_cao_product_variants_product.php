@@ -19,7 +19,7 @@ if (rth_is_module_disabled(Constants::MODULE_PRODUCT_NAME)) {
 
 
 $search  = 'WHERE p.products_status = \'1\'';
-$replace = sprintf($search . PHP_EOL . 'AND p.%s LIKE \'%%"parent":""%%\'', Constants::COLUMN_PRODUCTS_VARIANTS);
+$replace = sprintf($search . PHP_EOL . 'AND (p.%1$s LIKE \'%%"parent":""%%\' OR p.%1$s IS NULL)', Constants::COLUMN_PRODUCTS_VARIANTS);
 $subject = $listing_sql;
 
 $listing_sql = str_replace($search, $replace, $subject);
