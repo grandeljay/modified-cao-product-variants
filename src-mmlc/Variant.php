@@ -98,11 +98,18 @@ class Variant
         $language_id_english  = 1;
         $language_id_fallback = $language_id_english;
 
-        $this->product_data_variant = json_decode($this->product_data[Constants::COLUMN_PRODUCTS_VARIANTS], true);
-        $this->isParent             = isset($this->product_data_variant['parent']) && '' === $this->product_data_variant['parent'];
+        if (isset($product_data[Constants::COLUMN_PRODUCTS_VARIANTS])) {
+            $this->product_data_variant = json_decode($this->product_data[Constants::COLUMN_PRODUCTS_VARIANTS], true);
+        } else {
+            $this->product_data_variant = array();
+        }
 
-        if (!$this->isParent) {
-            $this->product_data_variant = $this->getVariantsFromParent($this->product_data_variant['parent']);
+        if (isset($this->product_data_variant['parent'])) {
+            $this->isParent = '' === $this->product_data_variant['parent'];
+
+            if (!$this->isParent) {
+                $this->product_data_variant = $this->getVariantsFromParent($this->product_data_variant['parent']);
+            }
         }
 
         $this->name         = $this->getDropdownName($language_id_current, $language_id_fallback);
