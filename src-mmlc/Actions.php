@@ -29,51 +29,14 @@ class Actions
             );
             $products_variants      = addslashes(json_encode($products_variants_data));
 
-            $shipping_status_id          = 0;
-            $shipping_status_id_constant = Constants::MODULE_PRODUCT_NAME . '_' . Constants::CONFIGURATION_SHIPPING_STATUS_ID;
-
-            if (defined($shipping_status_id_constant)) {
-                $shipping_status_id = constant($shipping_status_id_constant);
-            } else {
-                $shipping_status_id_query = xtc_db_query(
-                    sprintf(
-                        'SELECT *
-                          FROM `%s`
-                         WHERE `configuration_key` = "%s"',
-                        TABLE_CONFIGURATION,
-                        $shipping_status_id_constant
-                    )
-                );
-
-                $shipping_status_id = xtc_db_fetch_array($shipping_status_id_query)['configuration_value'];
-            }
-
-            $product_is_variant                 = '' !== $products_variants_data['parent'] || array() !== $products_variants_data['ids'];
-            $product_variant_is_child           = '' !== $products_variants_data['parent'] && array() === $products_variants_data['ids'];
-            $product_shippingtime_is_of_variant = (int) $shipping_status_id === (int) $product_data['products_shippingtime'];
-
-            if ($product_is_variant) {
-                if ($product_variant_is_child) {
-                    if ($product_shippingtime_is_of_variant) {
-                        $shipping_status_id = DEFAULT_SHIPPING_STATUS_ID;
-                    } else {
-                        continue;
-                    }
-                }
-            } else {
-                continue;
-            }
-
             xtc_db_query(
                 sprintf(
                     'UPDATE `%1$s`
-                        SET `%2$s`                  = "%3$s",
-                            `products_shippingtime` = %4$s
-                      WHERE `products_id` = %5$s',
+                        SET `%2$s` = "%3$s"
+                      WHERE `products_id` = %4$s',
                     TABLE_PRODUCTS,
                     Constants::COLUMN_PRODUCTS_VARIANTS,
                     $products_variants,
-                    $shipping_status_id,
                     $product_data['products_id']
                 )
             );
