@@ -94,6 +94,12 @@ class Cao
                 },
                 Variant::getItems($_POST['products_var_id'])
             );
+            $variant_shop_ids = \array_filter(
+                $variant_shop_ids,
+                function ($shop_id) {
+                    return !empty($shop_id);
+                }
+            );
 
             $products_variant['ids'] = $variant_shop_ids;
         }

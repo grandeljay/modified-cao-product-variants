@@ -33,7 +33,7 @@ class Variant
             return $itemsAt;
         }
 
-        return $items;
+        return array();
     }
 
     /**
