@@ -24,5 +24,7 @@ if (!$variant->isValid()) {
     return;
 }
 
-$info_smarty->assign('GRANDELJAY_CAO_PRODUCT_VARIANTS_NAME', $variant->getName());
-$info_smarty->assign('GRANDELJAY_CAO_PRODUCT_VARIANTS_DROPDOWN', $variant->getDropdown());
+if (isset($_SESSION['customers_status']['customers_status_id']) && DEFAULT_CUSTOMERS_STATUS_ID_GUEST !== $_SESSION['customers_status']['customers_status_id']) {
+    $info_smarty->assign('GRANDELJAY_CAO_PRODUCT_VARIANTS_NAME', $variant->getName());
+    $info_smarty->assign('GRANDELJAY_CAO_PRODUCT_VARIANTS_DROPDOWN', $variant->getDropdown());
+}
