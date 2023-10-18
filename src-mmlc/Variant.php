@@ -236,7 +236,7 @@ class Variant
             echo constant(Constants::MODULE_PRODUCT_NAME . '_DROPDOWN_UNAVAILABLE');
         } else {
             ?>
-            <select name="<?= $variant_dropdown_attribute_name ?>">
+            <select name="<?= $variant_dropdown_attribute_name ?>" placeholder="<?= '-- ' . $this->dropdownName . ' --' ?>">
                 <option <?= $this->isParent ? 'selected="selected"' : '' ?> disabled="disabled" value=""><?= '-- ' . $this->dropdownName . ' --' ?></option>
 
                 <?php foreach ($dropdown_values as $dropdown_value) { ?>
