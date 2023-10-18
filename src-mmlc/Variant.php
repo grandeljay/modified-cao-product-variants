@@ -219,6 +219,8 @@ class Variant
 
                     if (products_option) {
                         dropdown_variants.sumo.selectItem(products_id);
+                    } else {
+                        dropdown_variants.sumo.unSelectAll();
                     }
                 }
                 else {
