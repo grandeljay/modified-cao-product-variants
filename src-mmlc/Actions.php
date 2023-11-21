@@ -28,16 +28,22 @@ class Actions
                 'values' => empty($product_data['products_var_langtext'])      ? array() : Variant::getItems(unserialize($product_data['products_var_langtext'])[2]),
             );
             $products_variants      = addslashes(json_encode($products_variants_data));
+            $products_shippingtime  = constant(Constants::MODULE_PRODUCT_NAME . '_' . Constants::CONFIGURATION_SHIPPING_STATUS_ID);
+            $products_last_modified = 'NOW()';
 
             xtc_db_query(
                 sprintf(
                     'UPDATE `%1$s`
-                        SET `%2$s` = "%3$s"
+                        SET `%2$s`                   = "%3$s",
+                            `products_shippingtime`  = %5$s,
+                            `products_last_modified` = %6$s
                       WHERE `products_id` = %4$s',
                     TABLE_PRODUCTS,
                     Constants::COLUMN_PRODUCTS_VARIANTS,
                     $products_variants,
-                    $product_data['products_id']
+                    $product_data['products_id'],
+                    $products_shippingtime,
+                    $products_last_modified
                 )
             );
         }
