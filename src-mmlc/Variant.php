@@ -372,6 +372,10 @@ class Variant
         $parent       = xtc_db_fetch_array($parent_query);
         $variant_data = json_decode($parent[Constants::COLUMN_PRODUCTS_VARIANTS], true);
 
+        if (\JSON_ERROR_NONE !== \json_last_error()) {
+            throw new \Exception(\json_last_error_msg());
+        }
+
         return $variant_data;
     }
 
