@@ -13,10 +13,9 @@
 
 namespace Grandeljay\CaoProductVariants;
 
-if (rth_is_module_disabled(Constants::MODULE_PRODUCT_NAME)) {
+if (rth_is_module_disabled(Constants::MODULE_PRODUCT_NAME) || \FILENAME_SPECIALS === \basename($PHP_SELF)) {
     return;
 }
-
 
 $search  = 'WHERE p.products_status = \'1\'';
 $replace = sprintf($search . PHP_EOL . 'AND (p.%1$s LIKE \'%%"parent":""%%\' OR p.%1$s IS NULL)', Constants::COLUMN_PRODUCTS_VARIANTS);
