@@ -33,7 +33,7 @@ class Variant
             return $itemsAt;
         }
 
-        return array();
+        return [];
     }
 
     /**
@@ -55,7 +55,7 @@ class Variant
      *
      * @var array
      */
-    private array $ids = array();
+    private array $ids = [];
 
     /**
      * The variant's name.
@@ -83,7 +83,7 @@ class Variant
      *
      * @var array
      */
-    private array $values = array();
+    private array $values = [];
 
     /**
      * Construct
@@ -101,7 +101,7 @@ class Variant
         if (isset($product_data[Constants::COLUMN_PRODUCTS_VARIANTS])) {
             $this->product_data_variant = json_decode($this->product_data[Constants::COLUMN_PRODUCTS_VARIANTS], true);
         } else {
-            $this->product_data_variant = array();
+            $this->product_data_variant = [];
         }
 
         if (isset($this->product_data_variant['parent'])) {
@@ -114,8 +114,8 @@ class Variant
 
         $this->name         = $this->getDropdownName($language_id_current, $language_id_fallback);
         $this->dropdownName = $this->getDropdownPlaceholder($language_id_current, $language_id_fallback);
-        $this->values       = $this->product_data_variant['values'] ?? array();
-        $this->ids          = $this->product_data_variant['ids']    ?? array();
+        $this->values       = $this->product_data_variant['values'] ?? [];
+        $this->ids          = $this->product_data_variant['ids']    ?? [];
     }
 
     /**
@@ -143,7 +143,7 @@ class Variant
      */
     private function getDropdownValues(): array
     {
-        $variant_dropdown_values = array();
+        $variant_dropdown_values = [];
 
         foreach ($this->ids as $index => $id) {
             $variant_product = new \product($id);
@@ -152,13 +152,13 @@ class Variant
                 continue;
             }
 
-            $variant_dropdown_values[] = array(
+            $variant_dropdown_values[] = [
                 'id'    => $id,
                 'text'  => $this->values[$index]
                         ?? $variant_product->data['products_name']
                         ?? sprintf('Unknown description for product %s', $id),
                 'order' => $variant_product->data['products_sort'] ?? '1',
-            );
+            ];
         }
         usort(
             $variant_dropdown_values,
