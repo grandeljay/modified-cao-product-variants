@@ -370,6 +370,12 @@ class Variant
             )
         );
         $parent       = xtc_db_fetch_array($parent_query);
+
+        /** The product is likely just inactive */
+        if (null === $parent) {
+            return [];
+        }
+
         $variant_data = json_decode($parent[Constants::COLUMN_PRODUCTS_VARIANTS], true);
 
         if (\JSON_ERROR_NONE !== \json_last_error()) {
