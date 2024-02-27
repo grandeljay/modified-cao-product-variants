@@ -376,6 +376,11 @@ class Variant
             return [];
         }
 
+        /** Variants have been removed and are empty now */
+        if (!isset($parent[Constants::COLUMN_PRODUCTS_VARIANTS])) {
+            return [];
+        }
+
         $variant_data = json_decode($parent[Constants::COLUMN_PRODUCTS_VARIANTS], true);
 
         if (\JSON_ERROR_NONE !== \json_last_error()) {
