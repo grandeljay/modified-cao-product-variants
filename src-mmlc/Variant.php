@@ -94,9 +94,9 @@ class Variant
     {
         $this->product_data = $product_data;
 
-        $language_id_current  = $_SESSION['languages_id'];
         $language_id_english  = 1;
         $language_id_fallback = $language_id_english;
+        $language_id_current  = $_SESSION['languages_id'] ?? $language_id_fallback;
 
         if (isset($product_data[Constants::COLUMN_PRODUCTS_VARIANTS])) {
             $this->product_data_variant = json_decode($this->product_data[Constants::COLUMN_PRODUCTS_VARIANTS], true);
