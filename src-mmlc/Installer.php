@@ -79,13 +79,13 @@ class Installer
                 default => 'Select variant',
             };
 
-            $sql_data_array = array(
+            $sql_data_array = [
                 'shipping_status_id'    => $shipping_status_id,
                 'language_id'           => $language['languages_id'],
                 'shipping_status_name'  => $shipping_status_name,
                 'shipping_status_image' => 'grandeljay/cao-product-variants/light-blue.svg',
                 'sort_order'            => 0,
-            );
+            ];
 
             xtc_db_perform(TABLE_SHIPPING_STATUS, $sql_data_array);
         }

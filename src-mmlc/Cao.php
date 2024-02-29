@@ -36,7 +36,7 @@ class Cao
             )
         );
         $product_exists       = xtc_db_fetch_array($product_exists_query);
-        $product              = array();
+        $product              = [];
 
         if (false === $product_exists) {
             return;
@@ -49,7 +49,7 @@ class Cao
         /**
          * @see https://www.cao-faktura.de/produkte/erweiterungen/modul-artikelvarianten/
          */
-        $products_variant = array();
+        $products_variant = [];
 
         /**
          * Variant names

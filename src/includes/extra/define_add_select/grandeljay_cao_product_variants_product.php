@@ -6,9 +6,9 @@ if (rth_is_module_disabled(Constants::MODULE_PRODUCT_NAME)) {
     return;
 }
 
-$additional_fields = array(
+$additional_fields = [
     'p.products_variants',
-);
+];
 
 $add_select_default = array_merge($add_select_default, $additional_fields);
 $add_select_search  = array_merge($add_select_search, $additional_fields);

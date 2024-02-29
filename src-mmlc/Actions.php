@@ -20,13 +20,13 @@ class Actions
         );
 
         while ($product_data = xtc_db_fetch_array($variants_query)) {
-            $products_variants_data =  array(
-                'names'  => empty($product_data['products_varname'])           ? array() : unserialize($product_data['products_varname']),
-                'texts'  => empty($product_data['products_vartext'])           ? array() : unserialize($product_data['products_vartext']),
+            $products_variants_data =  [
+                'names'  => empty($product_data['products_varname'])           ? [] : unserialize($product_data['products_varname']),
+                'texts'  => empty($product_data['products_vartext'])           ? [] : unserialize($product_data['products_vartext']),
                 'parent' => empty($product_data['products_var_parent_artnum']) ? ''      : $product_data['products_var_parent_artnum'],
-                'ids'    => empty($product_data['products_var_id'])            ? array() : Variant::getItems($product_data['products_var_id']),
-                'values' => empty($product_data['products_var_langtext'])      ? array() : Variant::getItems(unserialize($product_data['products_var_langtext'])[2]),
-            );
+                'ids'    => empty($product_data['products_var_id'])            ? [] : Variant::getItems($product_data['products_var_id']),
+                'values' => empty($product_data['products_var_langtext'])      ? [] : Variant::getItems(unserialize($product_data['products_var_langtext'])[2]),
+            ];
             $products_variants      = addslashes(json_encode($products_variants_data));
             $products_last_modified = 'NOW()';
 

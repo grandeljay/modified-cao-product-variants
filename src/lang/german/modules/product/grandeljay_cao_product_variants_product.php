@@ -10,7 +10,7 @@
 
 use Grandeljay\CaoProductVariants\Constants;
 
-$translations = array(
+$translations = [
     /** Module */
     'TITLE'                => 'grandeljay - CAO Artikelvarianten',
     'TEXT_TILE'            => 'CAO Artikelvarianten',
@@ -23,7 +23,7 @@ $translations = array(
     'DROPDOWN_NAME'        => 'Optionen',
     'DROPDOWN_PLACEHOLDER' => 'Wählen Sie Ihre Variante',
     'DROPDOWN_UNAVAILABLE' => 'Zurzeit sind leider keine Varianten verfügbar.',
-);
+];
 
 foreach ($translations as $key => $text) {
     $constant = Constants::MODULE_PRODUCT_NAME . '_' . $key;
