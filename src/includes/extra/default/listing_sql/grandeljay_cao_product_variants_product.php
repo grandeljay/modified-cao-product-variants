@@ -17,8 +17,14 @@ if (rth_is_module_disabled(Constants::MODULE_PRODUCT_NAME) || \FILENAME_SPECIALS
     return;
 }
 
-$search  = 'WHERE p.products_status = \'1\'';
-$replace = sprintf($search . PHP_EOL . 'AND (p.%1$s LIKE \'%%"parent":""%%\' OR p.%1$s IS NULL)', Constants::COLUMN_PRODUCTS_VARIANTS);
-$subject = $listing_sql;
+$search       = 'WHERE p.products_status = \'1\'';
+$variants_sql = 'AND (
+       `p`.`products_variants` IS NULL
+    OR `p`.`products_variants` = \'[]\'
+    OR `p`.`products_variants` LIKE \'%%"parent":""%%\'
+)';
+$replace_sql  = $search . PHP_EOL . $variants_sql;
+$replace      = sprintf($replace_sql, Constants::COLUMN_PRODUCTS_VARIANTS);
+$subject      = $listing_sql;
 
 $listing_sql = str_replace($search, $replace, $subject);
