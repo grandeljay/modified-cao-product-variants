@@ -17,6 +17,11 @@ if (rth_is_module_disabled(Constants::MODULE_PRODUCT_NAME) || \FILENAME_SPECIALS
     return;
 }
 
+/** Show variants and children while filtering */
+if (isset($_GET['filter'])) {
+    return;
+}
+
 $search       = 'WHERE p.products_status = \'1\'';
 $variants_sql = 'AND (
        `p`.`products_variants` IS NULL
