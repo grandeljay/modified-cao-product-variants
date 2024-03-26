@@ -189,6 +189,7 @@ class Variant
         if (\is_string($values) || !\is_array($values)) {
             return $this->product_data_variant['values'];
         }
+        /** */
 
         return $values;
     }
