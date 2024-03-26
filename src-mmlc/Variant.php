@@ -181,6 +181,15 @@ class Variant
                ?? $this->product_data_variant['values'][$language_id_random]
                ?? ['Unknown'];
 
+        /**
+         * Backwards compatibility for v0.9.0.
+         *
+         * @since 0.9.2
+         */
+        if (\is_string($values) || !\is_array($values)) {
+            return $this->product_data_variant['values'];
+        }
+
         return $values;
     }
 
