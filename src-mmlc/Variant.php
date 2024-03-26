@@ -36,6 +36,24 @@ class Variant
         return [];
     }
 
+    public static function getValues(string $values_original, array $values_translations): array
+    {
+        $values    = \array_map('self::getItems', $values_translations);
+        $values[2] = self::getItems($values_original);
+
+        unset($values[-1]);
+        ksort($values);
+
+        foreach ($values as &$value) {
+            $value = \array_map('trim', $value);
+            $value = \array_filter($value);
+        }
+
+        $values = \array_filter($values);
+
+        return $values;
+    }
+
     /**
      * The modified-shop product data.
      *
@@ -85,6 +103,22 @@ class Variant
      */
     private array $values = [];
 
+    private function getLanguageId(): int
+    {
+        $language_id_fallback = $this->getLanguageIdFallback();
+        $language_id_current  = $_SESSION['languages_id'] ?? $language_id_fallback;
+
+        return $language_id_current;
+    }
+
+    private function getLanguageIdFallback(): int
+    {
+        $language_id_english  = 1;
+        $language_id_fallback = $language_id_english;
+
+        return $language_id_fallback;
+    }
+
     /**
      * Construct
      *
@@ -93,10 +127,6 @@ class Variant
     public function __construct(array $product_data)
     {
         $this->product_data = $product_data;
-
-        $language_id_english  = 1;
-        $language_id_fallback = $language_id_english;
-        $language_id_current  = $_SESSION['languages_id'] ?? $language_id_fallback;
 
         if (isset($product_data[Constants::COLUMN_PRODUCTS_VARIANTS])) {
             $this->product_data_variant = json_decode($this->product_data[Constants::COLUMN_PRODUCTS_VARIANTS], true);
@@ -112,9 +142,9 @@ class Variant
             }
         }
 
-        $this->name         = $this->getDropdownName($language_id_current, $language_id_fallback);
-        $this->dropdownName = $this->getDropdownPlaceholder($language_id_current, $language_id_fallback);
-        $this->values       = $this->product_data_variant['values'] ?? [];
+        $this->name         = $this->getDropdownName();
+        $this->dropdownName = $this->getDropdownPlaceholder();
+        $this->values       = $this->getDropdownValues();
         $this->ids          = $this->product_data_variant['ids']    ?? [];
     }
 
@@ -136,12 +166,30 @@ class Variant
         return true;
     }
 
+    private function getDropdownValues(): array
+    {
+        if (!isset($this->product_data_variant['values'])) {
+            return ['Unknown'];
+        }
+
+        $language_id          = $this->getLanguageId();
+        $language_id_fallback = $this->getLanguageIdFallback();
+        $language_id_random   = \array_rand($this->product_data_variant['values']);
+
+        $values = $this->product_data_variant['values'][$language_id]
+               ?? $this->product_data_variant['values'][$language_id_fallback]
+               ?? $this->product_data_variant['values'][$language_id_random]
+               ?? ['Unknown'];
+
+        return $values;
+    }
+
     /**
      * Returns the variant's dropdown values.
      *
      * @return array
      */
-    private function getDropdownValues(): array
+    private function getDropdownData(): array
     {
         $variant_dropdown_values = [];
 
@@ -232,7 +280,7 @@ class Variant
         });
         </script>
         <?php
-        $dropdown_values = $this->getDropdownValues();
+        $dropdown_values = $this->getDropdownData();
 
         if (empty($dropdown_values)) {
             echo constant(Constants::MODULE_PRODUCT_NAME . '_DROPDOWN_UNAVAILABLE');
@@ -399,8 +447,11 @@ class Variant
      *
      * @return string
      */
-    private function getDropdownName(int $language_id, $language_id_fallback): string
+    private function getDropdownName(): string
     {
+        $language_id          = $this->getLanguageId();
+        $language_id_fallback = $this->getLanguageIdFallback();
+
         $constant = Constants::MODULE_PRODUCT_NAME . '_DROPDOWN_NAME';
         $name     = defined($constant) ? constant($constant) : 'Options';
 
@@ -424,8 +475,11 @@ class Variant
      *
      * @return string
      */
-    private function getDropdownPlaceholder(int $language_id, $language_id_fallback): string
+    private function getDropdownPlaceholder(): string
     {
+        $language_id          = $this->getLanguageId();
+        $language_id_fallback = $this->getLanguageIdFallback();
+
         $constant     = Constants::MODULE_PRODUCT_NAME . '_DROPDOWN_PLACEHOLDER';
         $dropdownName = defined($constant) ? constant($constant) : 'Select your variant';
 

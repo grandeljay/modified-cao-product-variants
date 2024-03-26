@@ -109,13 +109,8 @@ class Cao
          *
          * @var string The product variant values.
          */
-        if (isset($_POST['products_var_text'])) {
-            $variant_values = array_map(
-                function ($shop_id) {
-                    return trim($shop_id);
-                },
-                Variant::getItems($_POST['products_var_text'])
-            );
+        if (isset($_POST['products_var_text'], $_POST['products_var_langtext'])) {
+            $variant_values = Variant::getValues($_POST['products_var_text'], $_POST['products_var_langtext']);
 
             $products_variant['values'] = $variant_values;
         }
