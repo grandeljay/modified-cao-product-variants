@@ -42,7 +42,7 @@ class Cao
             return;
         }
 
-        if (isset($_POST['products_sort']) && is_int($_POST['products_sort'])) {
+        if (isset($_POST['products_sort']) && \is_numeric($_POST['products_sort'])) {
             $product['products_sort'] = $_POST['products_sort'];
         }
 
