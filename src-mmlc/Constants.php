@@ -4,7 +4,7 @@ namespace Grandeljay\CaoProductVariants;
 
 class Constants
 {
-    private const MODULE_VERSION = '0.9.3';
+    private const MODULE_VERSION = '0.9.4';
 
     public const MODULE_PRODUCT_NAME    = 'MODULE_PRODUCT_GRANDELJAY_CAO_PRODUCT_VARIANTS_PRODUCT';
     public const MODULE_PRODUCT_VERSION = self::MODULE_VERSION;
