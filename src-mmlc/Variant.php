@@ -168,8 +168,8 @@ class Variant
 
     private function getDropdownValues(): array
     {
-        if (!isset($this->product_data_variant['values'])) {
             return ['Unknown'];
+        if (empty($this->product_data_variant['values'])) {
         }
 
         $language_id          = $this->getLanguageId();
