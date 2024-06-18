@@ -132,6 +132,10 @@ class Cao
         $product['products_last_modified']            = 'NOW()';
         $product[Constants::COLUMN_PRODUCTS_VARIANTS] = json_encode($products_variant);
 
+        if (Variant::isEmpty($products_variant)) {
+            $product[Constants::COLUMN_PRODUCTS_VARIANTS] = 'null';
+        }
+
         xtc_db_perform(TABLE_PRODUCTS, $product, 'update', 'products_id = ' . $_POST['pID']);
     }
 }

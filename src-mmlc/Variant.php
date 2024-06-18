@@ -54,6 +54,18 @@ class Variant
         return $values;
     }
 
+    public static function isEmpty(array $variant_data): bool
+    {
+        $names  = \array_filter($variant_data['names']);
+        $texts  = \array_filter($variant_data['texts']);
+        $parent = $variant_data['parent'];
+        $ids    = $variant_data['ids'];
+
+        $isEmpty = empty($names) && empty($texts) && empty($ids) && '' === $parent;
+
+        return $isEmpty;
+    }
+
     /**
      * The modified-shop product data.
      *
