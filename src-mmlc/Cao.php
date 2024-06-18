@@ -26,6 +26,19 @@ class Cao
             return;
         }
 
+        /** The module is not active in CAO, skip removing association. */
+        if (
+            !isset(
+                $_POST['products_variantname'],
+                $_POST['products_varianttext'],
+                $_POST['products_var_parent_artnum'],
+                $_POST['products_var_id'],
+                $_POST['products_var_text'],
+            )
+        ) {
+            return;
+        }
+
         $product_exists_query = xtc_db_query(
             sprintf(
                 'SELECT *
