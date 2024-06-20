@@ -28,6 +28,17 @@ Before installing the module in modified, some preperational steps are required 
     {/if}
     ```
 
+    Hide the "add to cart button" too:
+
+    ```html
+    <span class="addtobasket_cartbutton">
+        {if !$GRANDELJAY_CAO_PRODUCT_VARIANTS_IS_PARENT}
+        <span class="addtobasket_input">{$ADD_QTY}</span>
+        <span class="cssButtonPos10">{$ADD_CART_BUTTON}</span>
+        {/if}
+    </span>
+    ```
+
 1. Edit price templates
 
     If you would like to show price ranges for variants you can also edit `/templates/tpl_modified_responsive_6/module/includes/price_info.html` and `/templates/tpl_modified_responsive_6/module/includes/price_box.html` by adding the following code to the **beginning** of the if/then/else statement:
