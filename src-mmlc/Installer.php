@@ -12,8 +12,9 @@ class Installer
     {
         self::$moduleCaoProductVariants = $moduleCaoProductVariants;
 
-        self::installTableShippingStatus();
-        self::installTableProducts();
+        // self::installTableShippingStatus();
+        // self::installTableProducts();
+        self::installConfiguration();
     }
 
     private static function installTableProducts(): void
@@ -88,24 +89,36 @@ class Installer
         self::$moduleCaoProductVariants->addConfiguration(Constants::CONFIGURATION_SHIPPING_STATUS_ID, $shipping_status_id, 6, 1);
     }
 
+    private static function installConfiguration(): void
+    {
+        self::$moduleCaoProductVariants->addConfiguration(
+            'CAO_DELIMITER',
+            '@',
+            6,
+            1,
+            'xtc_cfg_select_option(array(\',\', \';\', \'@\'),'
+        );
+    }
+
     public static function uninstall(CaoProductVariants $moduleCaoProductVariants): void
     {
         self::$moduleCaoProductVariants = $moduleCaoProductVariants;
 
-        self::uninstallTableProducts();
-        self::uninstallTableShippingStatus();
+        // self::uninstallTableShippingStatus();
+        // self::uninstallTableProducts();
+        self::uninstallConfiguration();
     }
 
     private static function uninstallTableProducts(): void
     {
-        // xtc_db_query(
-        //     sprintf(
-        //         'ALTER TABLE `%s`
-        //          DROP COLUMN `%s`',
-        //         TABLE_PRODUCTS,
-        //         Constants::COLUMN_PRODUCTS_VARIANTS
-        //     )
-        // );
+        xtc_db_query(
+            sprintf(
+                'ALTER TABLE `%s`
+                 DROP COLUMN `%s`',
+                TABLE_PRODUCTS,
+                Constants::COLUMN_PRODUCTS_VARIANTS
+            )
+        );
     }
 
     private static function uninstallTableShippingStatus(): void
@@ -120,5 +133,10 @@ class Installer
         );
 
         self::$moduleCaoProductVariants->removeConfiguration(Constants::CONFIGURATION_SHIPPING_STATUS_ID);
+    }
+
+    private static function uninstallConfiguration(): void
+    {
+        self::$moduleCaoProductVariants->removeConfiguration('CAO_DELIMITER');
     }
 }

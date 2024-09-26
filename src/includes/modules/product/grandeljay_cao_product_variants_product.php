@@ -12,7 +12,7 @@
  */
 
 use RobinTheHood\ModifiedStdModule\Classes\StdModule;
-use Grandeljay\CaoProductVariants\{Actions, Constants, Installer, Variant};
+use Grandeljay\CaoProductVariants\{Constants, Installer, Variant};
 
 class grandeljay_cao_product_variants_product extends StdModule
 {
@@ -23,6 +23,8 @@ class grandeljay_cao_product_variants_product extends StdModule
         parent::__construct(Constants::MODULE_PRODUCT_NAME);
 
         $this->checkForUpdate(true);
+
+        $this->addKey('CAO_DELIMITER');
     }
 
     public function install(): void

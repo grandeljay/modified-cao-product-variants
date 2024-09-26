@@ -18,6 +18,10 @@ $translations = [
     'STATUS_TITLE'         => 'Status',
     'STATUS_DESC'          => 'Wählen Sie Ja um das Modul zu aktivieren und Nein um es zu deaktivieren.',
 
+    /** Configuration */
+    'CAO_DELIMITER_TITLE'  => 'Trennzeichen',
+    'CAO_DELIMITER_DESC'   => 'Das Trennzeichen für die Varienten aus CAO. Siehe CAO Einstellungen -> Sonstige Einstellungen.',
+
     /** Dropdown */
     'DROPDOWN_NAME'        => 'Optionen',
     'DROPDOWN_PLACEHOLDER' => 'Wählen Sie Ihre Variante',
