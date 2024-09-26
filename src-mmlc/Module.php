@@ -106,7 +106,7 @@ trait Module
             6,
             1,
             \sprintf(
-                'xtc_cfg_select_option(["%s", "%s", "%s"]),',
+                'xtc_cfg_select_option(["%s", "%s", "%s"],',
                 $delimiter_comma,
                 $delimiter_semicolon,
                 $delimiter_at
