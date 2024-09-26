@@ -13,8 +13,7 @@ namespace Grandeljay\CaoProductVariants;
 class Variant
 {
     /**
-     * Returns the product's variant id's or text independent of their delimiter
-     * (`,` or `@`).
+     * Returns the product's variant id's or text using the defined delimiter.
      *
      * @param string $items
      *
@@ -22,18 +21,10 @@ class Variant
      */
     public static function getItems(string $items): array
     {
-        $itemsComma = explode(',', $items);
-        $itemsAt    = explode('@', $items);
+        $itemsDelimiter = \constant(Constants::MODULE_PRODUCT_NAME . '_CAO_DELIMITER');
+        $items          = \explode($itemsDelimiter, $items);
 
-        if (is_array($itemsComma) && count($itemsComma) >= count($itemsAt)) {
-            return $itemsComma;
-        }
-
-        if (is_array($itemsAt) && count($itemsAt) >= count($itemsComma)) {
-            return $itemsAt;
-        }
-
-        return [];
+        return $items;
     }
 
     public static function getValues(string $values_original, array $values_translations): array
