@@ -4,13 +4,13 @@ namespace Grandeljay\CaoProductVariants;
 
 trait Module
 {
-    private array $keys = [
+    private array $configurationKeys = [
         'CAO_DELIMITER',
     ];
 
     private function addKeys(): void
     {
-        foreach ($this->keys as $key) {
+        foreach ($this->configurationKeys as $key) {
             $this->addKey($key);
         }
     }
@@ -116,7 +116,7 @@ trait Module
 
     private function uninstallConfiguration(): void
     {
-        foreach ($this->keys as $key) {
+        foreach ($this->configurationKeys as $key) {
             $this->removeConfiguration($key);
         }
 
