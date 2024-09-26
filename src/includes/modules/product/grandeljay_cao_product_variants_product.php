@@ -11,11 +11,15 @@
  * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
  */
 
+use Grandeljay\CaoProductVariants\Constants;
+use Grandeljay\CaoProductVariants\Module;
+use Grandeljay\CaoProductVariants\Variant;
 use RobinTheHood\ModifiedStdModule\Classes\StdModule;
-use Grandeljay\CaoProductVariants\{Constants, Installer, Variant};
 
 class grandeljay_cao_product_variants_product extends StdModule
 {
+    use Module;
+
     public const VERSION = Constants::MODULE_PRODUCT_VERSION;
 
     public function __construct()
@@ -23,15 +27,14 @@ class grandeljay_cao_product_variants_product extends StdModule
         parent::__construct(Constants::MODULE_PRODUCT_NAME);
 
         $this->checkForUpdate(true);
-
-        $this->addKey('CAO_DELIMITER');
+        $this->addKeys();
     }
 
     public function install(): void
     {
         parent::install();
 
-        Installer::install($this);
+        $this->installConfiguration();
     }
 
     protected function updateSteps(): int
@@ -49,7 +52,7 @@ class grandeljay_cao_product_variants_product extends StdModule
     {
         parent::remove();
 
-        Installer::uninstall($this);
+        $this->uninstallConfiguration();
     }
 
     /**
