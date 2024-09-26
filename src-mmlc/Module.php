@@ -2,6 +2,18 @@
 
 namespace Grandeljay\CaoProductVariants;
 
+/**
+ * The methods:
+ * - `installTableShippingStatus`
+ * - `installTableProducts`
+ * - `uninstallTableShippingStatus`
+ * - `uninstallTableProducts`
+ *
+ * have been commented out to allow manual updating (the modified way), by
+ * uninstalling and reinstalling the module without losing all variant data.
+ *
+ * @link https://github.com/RobinTheHood/modified-std-module/issues/33
+ */
 trait Module
 {
     private array $configurationKeys = [
