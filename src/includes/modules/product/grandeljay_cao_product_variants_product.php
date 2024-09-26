@@ -32,9 +32,9 @@ class grandeljay_cao_product_variants_product extends StdModule
         Installer::install($this);
     }
 
-    protected function updateSteps()
+    protected function updateSteps(): int
     {
-        if (-1 === version_compare($this->getVersion(), self::VERSION)) {
+        if (version_compare($this->getVersion(), self::VERSION, '<')) {
             $this->setVersion(self::VERSION);
 
             return self::UPDATE_SUCCESS;
