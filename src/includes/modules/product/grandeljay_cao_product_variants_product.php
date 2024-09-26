@@ -23,11 +23,6 @@ class grandeljay_cao_product_variants_product extends StdModule
         parent::__construct(Constants::MODULE_PRODUCT_NAME);
 
         $this->checkForUpdate(true);
-
-        $this->addAction(
-            'actionMigrate',
-            $this->getConfig('BUTTON_MIGRATE')
-        );
     }
 
     public function install(): void
@@ -92,10 +87,5 @@ class grandeljay_cao_product_variants_product extends StdModule
         }
 
         return $product_data_smarty;
-    }
-
-    protected function invokeActionMigrate(): void
-    {
-        call_user_func(Actions::class . '::actionMigrate');
     }
 }

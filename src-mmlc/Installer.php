@@ -42,11 +42,6 @@ class Installer
                 constant(Constants::MODULE_PRODUCT_NAME . '_TITLE')
             )
         );
-
-        /**
-         * Migrate old variant columns
-         */
-        Actions::actionMigrate();
     }
 
     private static function installTableShippingStatus(): void

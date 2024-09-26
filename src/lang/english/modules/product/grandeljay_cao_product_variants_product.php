@@ -17,7 +17,6 @@ $translations = [
     'LONG_DESCRIPTION'     => 'Enables the use of CAO product variants in the shop.',
     'STATUS_TITLE'         => 'Status',
     'STATUS_DESC'          => 'Select Yes to activate the module and No to deactivate it.',
-    'BUTTON_MIGRATE'       => 'Migrate variants',
 
     /** Dropdown */
     'DROPDOWN_NAME'        => 'Options',
