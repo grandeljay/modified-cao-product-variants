@@ -36,7 +36,18 @@ class Variant
         \ksort($values);
 
         foreach ($values as &$value) {
-            $value = \array_map('trim', $value);
+            $value = \array_map(
+                function (string $item): string {
+                    $item = \trim($item);
+
+                    if ('NULL' === $item) {
+                        $item = '';
+                    }
+
+                    return $item;
+                },
+                $value
+            );
             $value = \array_filter($value);
         }
 
