@@ -33,7 +33,7 @@ class Variant
         $values[2] = self::getItems($values_original);
 
         unset($values[-1]);
-        ksort($values);
+        \ksort($values);
 
         foreach ($values as &$value) {
             $value = \array_map('trim', $value);
