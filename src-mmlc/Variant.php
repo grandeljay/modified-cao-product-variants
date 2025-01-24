@@ -258,7 +258,8 @@ class Variant
 
             dropdown_variants.addEventListener('change', function() {
                 let products_id = this.value;
-                let variant_url = '<?= HTTPS_SERVER ?>/product_info.php?products_id=' + products_id;
+                let host        = '<?= ENABLE_SSL ? HTTPS_SERVER : HTTP_SERVER ?>';
+                let variant_url = host + '/product_info.php?products_id=' + products_id;
 
                 if (products_id && location.href !== variant_url) {
                     location.href = variant_url;
