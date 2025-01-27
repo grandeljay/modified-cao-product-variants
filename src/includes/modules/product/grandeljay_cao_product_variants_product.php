@@ -86,10 +86,10 @@ class grandeljay_cao_product_variants_product extends StdModule
 
         $xtcPrice = new xtcPrice($_SESSION['currency'], $_SESSION['customers_status']['customers_status_id']);
 
-        foreach ($product_data_smarty['PRODUCTS_PRICE_ARRAY'] as $index => $value) {
-            $product_data_smarty['PRODUCTS_PRICE_ARRAY'][$index]['GRANDELJAY_CAO_PRODUCT_VARIANTS']['PRICE_LOWEST']  = $xtcPrice->xtcFormatCurrency($variant_price_lowest);
-            $product_data_smarty['PRODUCTS_PRICE_ARRAY'][$index]['GRANDELJAY_CAO_PRODUCT_VARIANTS']['PRICE_HIGHEST'] = $xtcPrice->xtcFormatCurrency($variant_price_highest);
-        }
+        $product_data_smarty['GRANDELJAY_CAO_PRODUCT_VARIANTS']['PRICE_LOWEST']            = $variant_price_lowest;
+        $product_data_smarty['GRANDELJAY_CAO_PRODUCT_VARIANTS']['PRICE_LOWEST_FORMATTED']  = $xtcPrice->xtcFormatCurrency($variant_price_lowest);
+        $product_data_smarty['GRANDELJAY_CAO_PRODUCT_VARIANTS']['PRICE_HIGHEST']           = $variant_price_highest;
+        $product_data_smarty['GRANDELJAY_CAO_PRODUCT_VARIANTS']['PRICE_HIGHEST_FORMATTED'] = $xtcPrice->xtcFormatCurrency($variant_price_highest);
 
         return $product_data_smarty;
     }
