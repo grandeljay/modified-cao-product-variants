@@ -20,7 +20,7 @@ class grandeljay_cao_product_variants_product extends StdModule
 {
     use Module;
 
-    public const VERSION = '0.11.1';
+    public const VERSION = '0.11.2';
 
     public function __construct()
     {
